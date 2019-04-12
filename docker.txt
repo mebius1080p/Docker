@@ -9,8 +9,10 @@ sudo docker run -itd --name apache -p 80:80 -p 443:443 \
  -v ~/webg:/var/www/webg \
  -v $PWD/logs/apache/dev:/var/log/httpd \
  -v $PWD/apache/conf/dev.httpd.conf:/etc/httpd/conf/httpd.conf:ro \
- -v /etc/pki/tls/certs/server.key:/etc/pki/tls/certs/server.key:ro \
- -v /etc/pki/tls/certs/server.crt:/etc/pki/tls/certs/server.crt:ro \
+ -v /etc/pki/tls/certs/g.server.key:/etc/pki/tls/certs/g.server.key:ro \
+ -v /etc/pki/tls/certs/g.server.crt:/etc/pki/tls/certs/g.server.crt:ro \
+ -v /etc/pki/tls/certs/m.server.key:/etc/pki/tls/certs/m.server.key:ro \
+ -v /etc/pki/tls/certs/m.server.crt:/etc/pki/tls/certs/m.server.crt:ro \
  -v phpsock:/var/run/php-fpm \
  apache
 
