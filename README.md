@@ -5,7 +5,7 @@
 - MariaDB は公式イメージを使用
 - それぞれ個別のコンテナを動かす
 - dockernetwork を一部使用
-	* apache <=PHP-FPM(socket)=> PHP <=TCP/IP=> MariaDB
+	* apache <=PHP-FPM(socket)=> PHP <=socket=> MariaDB
 	* ネットワーク名は lamp とか適当に……
 - apache, php では supervisor を使用する
 - supervisor
@@ -74,6 +74,7 @@
 ### about php.ini
 - 最重要 php.ini 設定
 	* date.timezone = Asia/Tokyo
+	* pdo_mysql.default_socket=/var/lib/mysql/mysql.sock
 
 ### www.conf
 - 重要設定
@@ -105,6 +106,9 @@ catch_workers_output = yes
 	* 読み取り専用
 - ソケットファイル
 	* -v phpsock:/var/run/php-fpm で共有
+
+### DSN
+- mysql:unix_socket=/var/lib/mysql/mysql.sock;dbname=hogedb;charset=utf8
 
 
 
@@ -139,6 +143,9 @@ catch_workers_output = yes
 
 ## Docker network
 - sudo docker network create xxxxxxxx
+	```
+	docker network create --ipv6 --subnet=172.18.0.0/16,xxxx:xxxx:xxxx:xxxx::/64 --gateway=172.18.0.1 lamp
+	```
 - sudo docker network ls
 - docker run のときに、--network xxxxxxxx オプションを指定する
 - php で使用する config などで、mysql/mariadb の dsn に注意
@@ -160,6 +167,3 @@ openssl x509 -in hoge.net.csr -days 36500 -req -signkey hoge.net.key > server.cr
 ## 課題
 - docker compose 化
 - composer 問題
-- php <=> mariadb のソケット通信
-	* mysql:unix_socket=/tmp/mysql.sock;dbname=testdb
-	* pdo_mysql.default_socket に設定したファイルが使われる
