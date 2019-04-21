@@ -1,13 +1,13 @@
-# TLS 1.3 を使える最新環境のコンテナを作るための Docker リポジトリ
+# HTTP2, TLS 1.3 を使えるコンテナを作るための Docker リポジトリ
 
 ## 概要
-- apache, php は centos7 ベースのイメージから構築
+- apache, php, postfix は centos7 ベースのイメージから構築
 - MariaDB は公式イメージを使用
 - それぞれ個別のコンテナを動かす
-- dockernetwork を一部使用
+- 接続
 	* apache <=PHP-FPM(socket)=> PHP <=socket=> MariaDB
-	* ネットワーク名は lamp とか適当に……
-- apache, php では supervisor を使用する
+	* PHP <=docker network=> postfix
+- apache, php, postfix では supervisor を使用する
 - supervisor
 	* https://techracho.bpsinc.jp/morimorihoge/2017_06_05/40936
 	* https://techracho.bpsinc.jp/hachi8833/2018_09_04/61176
@@ -15,8 +15,27 @@
 - ソケットファイル共有での参考サイト
 	* https://oki2a24.com/2018/07/29/useing-unix-domain-socket-to-nginx-php-fpm-in-docker/
 	* https://christina04.hatenablog.com/entry/2016/05/04/134323
-- メールは、ホストの postfix を経由して dkim 署名の後送信する構成とする
+- メールは、一旦別コンテナの postfix を経由後、さらにホストの postfix を経由して dkim 署名の後送信する構成とする
+	* これは ipv6 対応のために php コンテナを host ネットワークに接続したとき、ホスト側の postfix にリレーできなかったから
+		- spf などの都合上、メール送信サーバーのアドレスはホストのアドレスとしたい
+		- php コンテナ内から内部の postfix を使用して docker0(172.17.0.1) にリレーさせると自分へのリレーと認識される
+		- メールサーバーをホストでも実行する場合、自身に対してはメールが送れなかった。
 	* opendkim の署名はホストで行う
+	* php からのメール送信は、swiftmailer, phpmailer 等のライブラリを使用する
+- ipv6 対応のため、apache, php は host ネットワークに接続する
+	* php 側でも ipv6 の機能を使うことがあるかもしれないので
+	* docker の ipv6 に関してはまだベストプラクティスがないらしいので host に接続
+	* vps で複数のアドレスが持てなそうなこと、ipv6 ルーティング設定が面倒なことも理由
+		- unique local address ...
+	* postfix, mariadb は bridge に接続
+	* host ネットワーク接続のため、/etc/docker/ には daemon.json は設置しない
+		- apache で docker build するときだけ /etc/docker/daemon.json を設置して行う！
+		```json
+		{
+		  "ipv6": true,
+		  "fixed-cidr-v6": "2001:db8:1::/64"
+		}
+		```
 
 
 ## Apache
@@ -75,6 +94,8 @@
 - 最重要 php.ini 設定
 	* date.timezone = Asia/Tokyo
 	* pdo_mysql.default_socket=/var/lib/mysql/mysql.sock
+	* openssl.cafile=/etc/pki/tls/certs/curl.cacert.pem
+		- composer で必要な模様
 
 ### www.conf
 - 重要設定
@@ -115,33 +136,22 @@ catch_workers_output = yes
 ## misc
 
 ### 起動順
-- php コンテナの方を先に起動し、ソケットファイルを作成させる
+- postfix を最初に起動 (172.17.0.2 にするため)
+	* php で使用するライブラリで指定する smtp サーバーのアドレスを固定させたいので……
+- mysql => php の順で起動し、ソケットファイルをそれぞれ作成させる？
 
-### composer どうするのか問題
-- docker run した後 php コンテナ内でセットアップ
-	* プラグインインストール
-		```
-		# cp /home/workuser/download/composer.phar /usr/bin/composer
+### composer
+- composer 自体は dockerfile に組み込み
+- docker run した後初回のみプラグインをセットアップ
+	```sh
+	# workuser で実施
+	composer global require hirak/prestissimo
+	```
 
-		$ composer global require hirak/prestissimo
-		## git が必要なので注意……
-		```
-- 公式イメージを使用する場合……
-	* https://hub.docker.com/_/composer
-
-
-### メモリ使用量
-- sudo docker stats
-	* mariadb	95MB
-	* apache	21MB
-	* php		26MB
-
-### イメージサイズ
-- 352+368+638 = 1358
-- centos のイメージ 202
 
 
 ## Docker network
+- 必要なくなったが参考までに残しておく
 - sudo docker network create xxxxxxxx
 	```
 	docker network create --ipv6 --subnet=172.18.0.0/16,xxxx:xxxx:xxxx:xxxx::/64 --gateway=172.18.0.1 lamp
@@ -166,4 +176,3 @@ openssl x509 -in hoge.net.csr -days 36500 -req -signkey hoge.net.key > server.cr
 
 ## 課題
 - docker compose 化
-- composer 問題

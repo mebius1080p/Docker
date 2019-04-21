@@ -3,11 +3,11 @@
 
 # 開発環境用
 sudo docker run -itd --name apache -p 80:80 -p 443:443 \
- --network lamp \
+ --network host \
  -e TZ=Asia/Tokyo \
  -v ~/webm:/var/www/webm \
  -v ~/webg:/var/www/webg \
- -v $PWD/logs/apache/dev:/var/log/httpd \
+ -v $PWD/logs/apache:/var/log/httpd \
  -v $PWD/apache/conf/dev.httpd.conf:/etc/httpd/conf/httpd.conf:ro \
  -v /etc/pki/tls/certs/g.server.key:/etc/pki/tls/certs/g.server.key:ro \
  -v /etc/pki/tls/certs/g.server.crt:/etc/pki/tls/certs/g.server.crt:ro \
@@ -18,11 +18,11 @@ sudo docker run -itd --name apache -p 80:80 -p 443:443 \
 
 # 開発環境用
 sudo docker run -itd --name php \
- --network lamp \
+ --network host \
  -e TZ=Asia/Tokyo \
  -v ~/webm:/var/www/webm \
  -v ~/webg:/var/www/webg \
- -v $PWD/logs/php/dev:/var/log/php-fpm \
+ -v $PWD/logs/php:/var/log/php-fpm \
  -v $PWD/php/conf/php-fpm.conf:/etc/php-fpm.conf:ro \
  -v $PWD/php/conf/www.conf:/etc/php-fpm.d/www.conf:ro \
  -v $PWD/php/conf/php.ini:/etc/php.ini:ro \
@@ -30,9 +30,15 @@ sudo docker run -itd --name php \
  -v mysqldata:/var/lib/mysql \
  php
 
+# for postfix
+sudo docker run -itd --name postfix \
+ --network bridge \
+ -e TZ=Asia/Tokyo \
+ postfix
+
 # パスワードは適宜変更……
 sudo docker run -itd --name mariadb \
- --network lamp \
+ --network bridge \
  -e TZ=Asia/Tokyo \
  -e MYSQL_ROOT_PASSWORD=root \
  -v $PWD/mariadb/conf.d/custom.cnf:/etc/mysql/conf.d/custom.cnf \
