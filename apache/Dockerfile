@@ -50,7 +50,8 @@ RUN yum update -y && yum install epel-release -y \
 	openssl-devel \
 	initscripts \
 	supervisor \
-	&& yum clean all
+	&& yum clean all \
+	&& mkdir -p /var/run/php-fpm
 
 
 # rpmbuild のため、ユーザーの追加を行う
