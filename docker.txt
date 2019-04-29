@@ -45,6 +45,7 @@ sudo docker run -itd --name mariadb \
  -v mysqldata:/var/lib/mysql \
  mariadb
 
+
 # 本番
 
 sudo docker run -itd --name mariadb \
@@ -52,10 +53,9 @@ sudo docker run -itd --name mariadb \
  -e TZ=Asia/Tokyo \
  -e MYSQL_ROOT_PASSWORD=root \
  -v $PWD/mariadb/conf.d/custom.cnf:/etc/mysql/conf.d/custom.cnf \
- -v mysqldata:/var/lib/mysql \
  -v ~/share:/var/share \
+ -v mysqldata:/var/lib/mysql \
  mariadb
-
 
 sudo docker run -itd --name php \
  --network host \
@@ -74,7 +74,7 @@ sudo docker run -itd --name apache -p 80:80 -p 443:443 \
  -e TZ=Asia/Tokyo \
  -v ~/web:/var/www/web \
  -v $PWD/logs/apache:/var/log/httpd \
- -v $PWD/apache/conf/dev.httpd.conf:/etc/httpd/conf/httpd.conf:ro \
+ -v $PWD/apache/conf/production.httpd.conf:/etc/httpd/conf/httpd.conf:ro \
  -v /etc/pki/tls/certs/server.key:/etc/pki/tls/certs/server.key:ro \
  -v /etc/pki/tls/certs/server.crt:/etc/pki/tls/certs/server.crt:ro \
  -v /etc/pki/tls/certs/int.crt:/etc/pki/tls/certs/int.crt:ro \
