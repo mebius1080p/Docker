@@ -85,7 +85,7 @@ RUN mkdir ~/download -p \
 # => /usr/local/lib64/libssl.so.1.1
 # 最後に ldconfig コマンドでライブラリの場所を指定する
 WORKDIR /home/${USER_NAME}/download
-ARG OPENSSL_VERSION=1.1.1b
+ARG OPENSSL_VERSION=1.1.1c
 RUN wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
 	&& tar xvf openssl-${OPENSSL_VERSION}.tar.gz \
 	&& cd openssl-${OPENSSL_VERSION} \
@@ -102,7 +102,7 @@ RUN wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
 # nghttp2 インストール
 # /usr/local/lib に入る
 WORKDIR /home/${USER_NAME}/download
-ARG NGHTTP2_VERSION=1.36.0
+ARG NGHTTP2_VERSION=1.39.1
 RUN wget https://github.com/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION}/nghttp2-${NGHTTP2_VERSION}.tar.xz \
 	&& tar xvf nghttp2-${NGHTTP2_VERSION}.tar.xz \
 	&& cd nghttp2-${NGHTTP2_VERSION} \
@@ -120,7 +120,7 @@ RUN wget https://github.com/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION
 # APR, APR-UTIL のインストール
 # APR-UTIL は新しいものが yum にあるのでそれを使う
 WORKDIR /home/${USER_NAME}/download
-ARG APR_VERSION=1.6.5
+ARG APR_VERSION=1.7.0
 RUN wget http://ftp.jaist.ac.jp/pub/apache//apr/apr-${APR_VERSION}.tar.bz2 \
 	&& rpmbuild -tb --clean apr-${APR_VERSION}.tar.bz2 \
 	&& cd ~/rpmbuild/RPMS/x86_64 \
@@ -134,7 +134,7 @@ RUN wget http://ftp.jaist.ac.jp/pub/apache//apr/apr-${APR_VERSION}.tar.bz2 \
 # apache のインストール
 # httpd.spec ファイルはあらかじめ編集しておく
 WORKDIR /home/${USER_NAME}/download
-ARG APACHE_VERSION=2.4.38
+ARG APACHE_VERSION=2.4.39
 COPY spec/httpd.spec /home/${USER_NAME}/rpmbuild/SPECS/
 RUN wget https://www-eu.apache.org/dist//httpd/httpd-${APACHE_VERSION}.tar.bz2 \
 	&& cp httpd-${APACHE_VERSION}.tar.bz2 ~/rpmbuild/SOURCES \
