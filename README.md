@@ -152,6 +152,13 @@ catch_workers_output = yes
 	* composer global require "phan/phan:2.x"
 - phan を使用するユーザーの .bashrc に下記を追記
 	* alias phan='~/.composer/vendor/bin/phan --progress-bar'
+- phpunit
+	```sh
+	wget https://phar.phpunit.de/phpunit-8.phar
+	mv phpunit-8.phar phpunit
+	chmod 755 phpunit
+	mv phpunit /usr/bin/
+	```
 
 
 ## Docker network
