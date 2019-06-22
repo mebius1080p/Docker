@@ -22,6 +22,7 @@ sudo docker run -itd --name php \
  -e TZ=Asia/Tokyo \
  -v ~/webm:/var/www/webm \
  -v ~/webg:/var/www/webg \
+ -v ~/PHPLib:/var/PHPLib \
  -v $PWD/logs/php:/var/log/php-fpm \
  -v $PWD/php/conf/php-fpm.conf:/etc/php-fpm.conf:ro \
  -v $PWD/php/conf/www.conf:/etc/php-fpm.d/www.conf:ro \
