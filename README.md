@@ -1,9 +1,9 @@
-# HTTP2, TLS 1.3 を使えるコンテナを作るための Docker リポジトリ
+# HTTP2, TLS 1.3 を使えるサイトに必要なコンテナを作るための Docker リポジトリ
 
 ## 概要
 - apache, php, postfix は centos7 ベースのイメージから構築
 - MariaDB は公式イメージを使用
-- それぞれ個別のコンテナを動かす
+- それぞれ個別のコンテナで動かす
 - 接続
 	* apache <=PHP-FPM(socket)=> PHP <=socket=> MariaDB
 	* PHP <=docker network=> postfix
@@ -28,8 +28,7 @@
 	* vps で複数のアドレスが持てなそうなこと、ipv6 ルーティング設定が面倒なことも理由
 		- unique local address ...
 	* postfix, mariadb は bridge に接続
-	* host ネットワーク接続のため、/etc/docker/ には daemon.json は設置しない
-		- apache で docker build するときだけ /etc/docker/daemon.json を設置して行う！
+	* ホストの /etc/docker/daemon.json は設置したままにする
 		```json
 		{
 		  "ipv6": true,
@@ -147,7 +146,12 @@ catch_workers_output = yes
 	# workuser で実施
 	composer global require hirak/prestissimo
 	```
-
+### 開発環境限定 (php コンテナ)
+- docker run した後コンテナ内で下記をインストール
+	* yum install php-pecl-xdebug php-ast php-xml
+	* composer global require "phan/phan:2.x"
+- phan を使用するユーザーの .bashrc に下記を追記
+	* alias phan='~/.composer/vendor/bin/phan --progress-bar'
 
 
 ## Docker network
