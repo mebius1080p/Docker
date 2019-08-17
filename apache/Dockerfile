@@ -102,7 +102,7 @@ RUN wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
 # nghttp2 インストール
 # /usr/local/lib に入る
 WORKDIR /home/${USER_NAME}/download
-ARG NGHTTP2_VERSION=1.39.1
+ARG NGHTTP2_VERSION=1.39.2
 RUN wget https://github.com/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION}/nghttp2-${NGHTTP2_VERSION}.tar.xz \
 	&& tar xvf nghttp2-${NGHTTP2_VERSION}.tar.xz \
 	&& cd nghttp2-${NGHTTP2_VERSION} \
@@ -134,7 +134,7 @@ RUN wget http://ftp.jaist.ac.jp/pub/apache//apr/apr-${APR_VERSION}.tar.bz2 \
 # apache のインストール
 # httpd.spec ファイルはあらかじめ編集しておく
 WORKDIR /home/${USER_NAME}/download
-ARG APACHE_VERSION=2.4.39
+ARG APACHE_VERSION=2.4.41
 COPY spec/httpd.spec /home/${USER_NAME}/rpmbuild/SPECS/
 RUN wget https://www-eu.apache.org/dist//httpd/httpd-${APACHE_VERSION}.tar.bz2 \
 	&& cp httpd-${APACHE_VERSION}.tar.bz2 ~/rpmbuild/SOURCES \
