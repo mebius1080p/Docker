@@ -10,7 +10,7 @@ FROM centos:7
 LABEL maintainer="mebius"
 
 WORKDIR /root
-ARG COMPOSER_VER=1.8.5
+ARG COMPOSER_VER=1.9.1
 
 # git は composer の prestissimo プラグイン用
 # openssl は php の暗号化の他、swiftmailer ダウンロードの際に必要
