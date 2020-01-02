@@ -51,7 +51,8 @@ RUN yum update -y && yum install epel-release -y \
 	initscripts \
 	supervisor \
 	&& yum clean all \
-	&& mkdir -p /var/run/php-fpm
+	&& mkdir -p /var/run/php-fpm \
+	&& chmod 777 /var/run/php-fpm
 
 
 # rpmbuild のため、ユーザーの追加を行う
