@@ -20,7 +20,7 @@ RUN yum update -y && yum install -y \
 	openssl \
 	&& wget https://rpms.remirepo.net/enterprise/remi-release-7.rpm \
 	&& rpm -Uvh remi-release-7.rpm \
-	&& yum install -y --enablerepo=remi-php73 --enablerepo=epel \
+	&& yum install -y --enablerepo=remi-php74 --enablerepo=epel \
 	supervisor \
 	php-fpm \
 	php-cli \
