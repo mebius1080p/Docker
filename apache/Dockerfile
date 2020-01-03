@@ -156,6 +156,9 @@ COPY conf.d/expire.conf /etc/httpd/conf.d/expire.conf
 # supervisor の設定
 COPY supervisord.conf /etc
 
+# 起動スクリプトの設置
+COPY _init_.sh /_init_.sh
+
 EXPOSE 80 443
 
-CMD ["/usr/bin/supervisord"]
+CMD ["sh", "/_init_.sh"]
