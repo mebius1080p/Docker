@@ -148,16 +148,22 @@ catch_workers_output = yes
 	```
 ### 開発環境限定 (php コンテナ)
 - docker run した後コンテナ内で下記をインストール
-	* yum install php-pecl-xdebug php-ast php-xml
-	* composer global require "phan/phan:2.x"
-- phan を使用するユーザーの .bashrc に下記を追記
-	* alias phan='~/.composer/vendor/bin/phan --progress-bar'
-- phpunit
 	```sh
+	# root
+	yum install php-pecl-xdebug php-ast php-xml --enablerepo=remi-php74
+	cd
 	wget https://phar.phpunit.de/phpunit-8.phar
 	mv phpunit-8.phar phpunit
 	chmod 755 phpunit
 	mv phpunit /usr/bin/
+
+	# workuser で実施
+	composer global require phan/phan
+	cd
+	vi .bashrc
+
+	alias phan='~/.composer/vendor/bin/phan --progress-bar --color'
+	# exit して workuser にスイッチ
 	```
 
 
