@@ -3,7 +3,7 @@
 CREATE DATABASE hoge;
 
 -- ユーザー作成
-CREATE USER fuga IDENTIFIED BY `xxxxxxxxxx`;
+CREATE USER fuga IDENTIFIED BY 'xxxxxxxxxx';
 
 -- 確認
 SELECT Host, User, Password FROM mysql.user;
