@@ -29,7 +29,11 @@ LABEL maintainer="mebius"
 # distcache の rpm 作成で、
 # openssl-devel, initscripts(/sbin/service) が必要
 
-RUN yum update -y && yum install epel-release -y \
+# docker build 時に yum で ipv4 のみ使用させるよう、真っ先に設定しておく
+
+RUN echo "ip_resolve=4" >> /etc/yum.conf \
+	&& yum update -y \
+	&& yum install epel-release -y \
 	&& yum install -y --enablerepo=epel \
 	perl \
 	make \
@@ -72,7 +76,7 @@ USER ${USER_NAME}
 # WORKDIR でディレクトリを作らせると所有者が root になってしまうようなので、最初は手動で作成する
 RUN mkdir ~/download -p \
 	&& cd ~/download \
-	&& wget https://archive.fedoraproject.org/pub/archive/fedora/linux/releases/18/Everything/source/SRPMS/d/distcache-1.4.5-23.src.rpm \
+	&& wget -4 https://archive.fedoraproject.org/pub/archive/fedora/linux/releases/18/Everything/source/SRPMS/d/distcache-1.4.5-23.src.rpm \
 	&& rpmbuild --rebuild --clean distcache-1.4.5-23.src.rpm \
 	&& cd ~/rpmbuild/RPMS/x86_64 \
 	&& sudo rpm -Uvh distcache-1.4.5-23.x86_64.rpm distcache-devel-1.4.5-23.x86_64.rpm \
@@ -86,8 +90,8 @@ RUN mkdir ~/download -p \
 # => /usr/local/lib64/libssl.so.1.1
 # 最後に ldconfig コマンドでライブラリの場所を指定する
 WORKDIR /home/${USER_NAME}/download
-ARG OPENSSL_VERSION=1.1.1d
-RUN wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
+ARG OPENSSL_VERSION=1.1.1f
+RUN wget -4 https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
 	&& tar xvf openssl-${OPENSSL_VERSION}.tar.gz \
 	&& cd openssl-${OPENSSL_VERSION} \
 	&& ./config \
@@ -104,7 +108,7 @@ RUN wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
 # /usr/local/lib に入る
 WORKDIR /home/${USER_NAME}/download
 ARG NGHTTP2_VERSION=1.40.0
-RUN wget https://github.com/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION}/nghttp2-${NGHTTP2_VERSION}.tar.xz \
+RUN wget -4 https://github.com/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION}/nghttp2-${NGHTTP2_VERSION}.tar.xz \
 	&& tar xvf nghttp2-${NGHTTP2_VERSION}.tar.xz \
 	&& cd nghttp2-${NGHTTP2_VERSION} \
 	&& export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig \
@@ -122,7 +126,7 @@ RUN wget https://github.com/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION
 # APR-UTIL は新しいものが yum にあるのでそれを使う
 WORKDIR /home/${USER_NAME}/download
 ARG APR_VERSION=1.7.0
-RUN wget http://ftp.jaist.ac.jp/pub/apache//apr/apr-${APR_VERSION}.tar.bz2 \
+RUN wget -4 http://ftp.jaist.ac.jp/pub/apache//apr/apr-${APR_VERSION}.tar.bz2 \
 	&& rpmbuild -tb --clean apr-${APR_VERSION}.tar.bz2 \
 	&& cd ~/rpmbuild/RPMS/x86_64 \
 	&& sudo rpm -Uvh apr-${APR_VERSION}-1.x86_64.rpm apr-devel-${APR_VERSION}-1.x86_64.rpm \
@@ -135,9 +139,9 @@ RUN wget http://ftp.jaist.ac.jp/pub/apache//apr/apr-${APR_VERSION}.tar.bz2 \
 # apache のインストール
 # httpd.spec ファイルはあらかじめ編集しておく
 WORKDIR /home/${USER_NAME}/download
-ARG APACHE_VERSION=2.4.41
+ARG APACHE_VERSION=2.4.43
 COPY spec/httpd.spec /home/${USER_NAME}/rpmbuild/SPECS/
-RUN wget https://www-eu.apache.org/dist//httpd/httpd-${APACHE_VERSION}.tar.bz2 \
+RUN wget -4 https://www-eu.apache.org/dist//httpd/httpd-${APACHE_VERSION}.tar.bz2 \
 	&& cp httpd-${APACHE_VERSION}.tar.bz2 ~/rpmbuild/SOURCES \
 	&& cd ~/rpmbuild/SPECS \
 	&& export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig \
