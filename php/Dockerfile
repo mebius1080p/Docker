@@ -10,15 +10,17 @@ FROM centos:7
 LABEL maintainer="mebius"
 
 WORKDIR /root
-ARG COMPOSER_VER=1.9.1
+ARG COMPOSER_VER=1.10.1
 
 # git は composer の prestissimo プラグイン用
 # openssl は php の暗号化の他、swiftmailer ダウンロードの際に必要
-RUN yum update -y && yum install -y \
+RUN echo "ip_resolve=4" >> /etc/yum.conf \
+	&& yum update -y \
+	&& yum install -y \
 	epel-release \
 	wget \
 	openssl \
-	&& wget https://rpms.remirepo.net/enterprise/remi-release-7.rpm \
+	&& wget -4 https://rpms.remirepo.net/enterprise/remi-release-7.rpm \
 	&& rpm -Uvh remi-release-7.rpm \
 	&& yum install -y --enablerepo=remi-php74 --enablerepo=epel \
 	supervisor \
@@ -27,14 +29,15 @@ RUN yum update -y && yum install -y \
 	php-pdo \
 	php-mysqlnd \
 	php-mbstring \
+	php-xml \
 	git \
 	zip \
 	unzip \
 	&& yum clean all \
 	&& mkdir -p /run/php-fpm \
 	&& chmod 770 /run/php-fpm \
-	&& wget https://getcomposer.org/download/${COMPOSER_VER}/composer.phar \
-	&& wget https://getcomposer.org/download/${COMPOSER_VER}/composer.phar.sha256sum \
+	&& wget -4 https://getcomposer.org/download/${COMPOSER_VER}/composer.phar \
+	&& wget -4 https://getcomposer.org/download/${COMPOSER_VER}/composer.phar.sha256sum \
 	&& sha256sum -c composer.phar.sha256sum \
 	&& chmod 755 composer.phar \
 	&& mv composer.phar /usr/bin/composer
@@ -56,3 +59,8 @@ CMD ["/usr/bin/supervisord"]
 
 # COPY php.ini したあとだめだったのになぜか docker run 後はうまくいく……
 # composer global require hirak/prestissimo
+
+# 開発環境
+# yum install --enablerepo=remi-php74 php-ast
+# composer global require phan/phan
+# yum install --enablerepo=remi-php74 php-pecl-xdebug
