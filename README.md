@@ -152,8 +152,8 @@ catch_workers_output = yes
 	# root
 	yum install php-pecl-xdebug php-ast php-xml --enablerepo=remi-php74
 	cd
-	wget https://phar.phpunit.de/phpunit-8.phar
-	mv phpunit-8.phar phpunit
+	wget https://phar.phpunit.de/phpunit-9.phar
+	mv phpunit-9.phar phpunit
 	chmod 755 phpunit
 	mv phpunit /usr/bin/
 
