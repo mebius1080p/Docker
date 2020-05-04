@@ -163,6 +163,7 @@ catch_workers_output = yes
 	vi .bashrc
 
 	alias phan='~/.composer/vendor/bin/phan --progress-bar --color'
+	alias phpunit='phpunit --color'
 	# exit して workuser にスイッチ
 	```
 
