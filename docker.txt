@@ -1,3 +1,5 @@
+@deprecated
+参考までに残しておく？
 # logs は git 対象外
 # ~/docker ディレクトリで実行する
 

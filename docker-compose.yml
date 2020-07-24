@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  apache:
+    build:
+      context: ./apache
+    environment:
+      - TZ=Asia/Tokyo
+    network_mode: "host"
+    volumes:
+      - "${WEB_DIR}:/var/web"
+      - "${HTTPD_CONF}:/etc/httpd/conf/httpd.conf:ro"
+      - "${HTTPD_LOG_DIR}:/var/log/httpd"
+      - "phpsock:/var/run/php-fpm"
+      - "${CERT_DIR}:/etc/pki/tls/certs/web:ro"
+    restart: always
+  php:
+    build:
+      context: ./php
+    environment:
+      - TZ=Asia/Tokyo
+    network_mode: "host"
+    volumes:
+      - "${WEB_DIR}:/var/web"
+      - "${PHP_INI}:/etc/php.ini:ro"
+      - "${PHP_FPM_CONF}:/etc/php-fpm.conf:ro"
+      - "${WWW_CONF}:/etc/php-fpm.d/www.conf:ro"
+      - "${PHP_LOG_DIR}:/var/log/php-fpm"
+      - "phpsock:/var/run/php-fpm"
+      - "mysqldata104:/var/lib/mysql"
+    restart: always
+  postfix:
+    build:
+      context: ./postfix
+    environment:
+      - TZ=Asia/Tokyo
+    networks:
+      common_net:
+        ipv4_address: 172.21.0.2
+    # hostname: dc_postfix
+    # container_name: dc_postfix
+    restart: always
+  mariadb:
+    image: mariadb
+    environment:
+      - TZ=Asia/Tokyo
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    networks:
+      common_net:
+        ipv4_address: 172.21.0.3
+    volumes:
+      - "${MARIADB_CONF}:/etc/mysql/conf.d/custom.cnf:ro"
+      # - "${MARIADB_LOG_DIR}:/var/log/mysql"
+      - "${SHARE_DIR}:/var/share"
+      - "mysqldata104:/var/lib/mysql"
+    restart: always
+volumes:
+  phpsock:
+  mysqldata104:
+networks:
+  common_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.21.0.0/24
