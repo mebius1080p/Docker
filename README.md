@@ -18,7 +18,7 @@
 - メールは、一旦別コンテナの postfix を経由後、さらにホストの postfix を経由して dkim 署名の後送信する構成とする
 	* これは ipv6 対応のために php コンテナを host ネットワークに接続したとき、ホスト側の postfix にリレーできなかったから
 		- spf などの都合上、メール送信サーバーのアドレスはホストのアドレスとしたい
-		- php コンテナ内から内部の postfix を使用して docker0(172.17.0.1) にリレーさせると自分へのリレーと認識される
+		- php コンテナ内から内部の postfix を使用して docker0(172.17.0.1 など) にリレーさせると自分へのリレーと認識される
 		- メールサーバーをホストでも実行する場合、自身に対してはメールが送れなかった。
 	* opendkim の署名はホストで行う
 	* php からのメール送信は、swiftmailer, phpmailer 等のライブラリを使用する
@@ -45,42 +45,16 @@
 		- ServerTokens Prod
 		- Include /etc/httpd/conf.d/*.conf
 		- Include /path/to/vhost.conf
-		- 開発用コンテナでは二種類の conf を読む構成とする
-			* 二つのサイトの開発を行う
 
 ### vhost.conf
 - php-fpm との連携での最重要設定
 ```conf
-# 最終的に下記で動作させた
-# docker network 経由での通信はうまくいかなかったが、こちらの方が速いらしいのでこれでよし
 <FilesMatch ".*\.php$">
     SetHandler "proxy:unix:/var/run/php-fpm/php7.sock|fcgi://localhost"
 </FilesMatch>
 ```
 
 ### ホストとのファイル共有
-- web files の設置……
-	* コンテナ内のパスは /var/www/xxxx を想定
-	* ディレクトリそのものを共有
-	* 読み書き
-	* マウントディレクトリは下記の通り
-		- 開発環境では webx (webm|webg)
-		- 本番では web
-- 証明書
-	* 個別のファイルを共有
-	* 読み取りのみ
-	* /etc/pki/tls/certs
-		- server.cert
-		- server.int.cert
-		- server.key
-		- permission 600
-		- owner root
-- apache 自体のログなど
-	* /var/log/httpd
-	* ディレクトリそのものを共有
-	* permission 644 ?
-	* owner root
-	* 読み書き
 - ソケットファイル
 	* -v phpsock:/var/run/php-fpm で共有
 		- phpsock はわかりやすい名前でよい
@@ -114,30 +88,12 @@ catch_workers_output = yes
 ### php-fpm.conf
 - デフォルトのままで OK
 
-### ホストとのファイル共有
-- web ファイル
-	* apache コンテナと同じパスに共有させる
-- ログディレクトリ
-- php-fpm.conf
-	* 読み取り専用
-- www.conf
-	* 読み取り専用
-- php.ini
-	* 読み取り専用
-- ソケットファイル
-	* -v phpsock:/var/run/php-fpm で共有
-
 ### DSN
 - mysql:unix_socket=/var/lib/mysql/mysql.sock;dbname=hogedb;charset=utf8
 
 
 
 ## misc
-
-### 起動順
-- postfix を最初に起動 (172.17.0.2 にするため)
-	* php で使用するライブラリで指定する smtp サーバーのアドレスを固定させたいので……
-- mysql => php の順で起動し、ソケットファイルをそれぞれ作成させる？
 
 ### composer
 - composer 自体は dockerfile に組み込み
@@ -191,6 +147,3 @@ hoge.net
 
 openssl x509 -in hoge.net.csr -days 36500 -req -signkey hoge.net.key > server.crt
 ```
-
-## 課題
-- docker compose 化
