@@ -1,0 +1,10 @@
+FROM centos:8
+LABEL maintainer="mebius"
+
+RUN echo "ip_resolve=4" >> /etc/yum.conf \
+	&& yum update -y \
+	&& yum install epel-release -y \
+	&& yum install certbot -y \
+	&& yum clean all
+
+CMD ["/bin/bash"]
