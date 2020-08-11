@@ -54,6 +54,24 @@ services:
       - "${SHARE_DIR}:/var/share"
       - "mysqldata104:/var/lib/mysql"
     restart: always
+  letsencrypt:
+    build:
+      context: ./letsencrypt
+    environment:
+      - TZ=Asia/Tokyo
+      - "LETS_DOMAIN=${LETS_DOMAIN}"
+      - "WEB_ROOT=${WEB_ROOT}"
+      - "LETS_EMAIL=${LETS_EMAIL}"
+    volumes:
+      - "${WEB_DIR}:/var/www/web"
+      - "${LETS_LOG_DIR}:/var/log/letsencrypt"
+      - "${LETS_CONFIR_DIR}:/etc/letsencrypt"
+      - "${LETS_SCRIPT_DIR}:/root/scripts"
+    networks:
+      common_net:
+        ipv4_address: 172.21.0.4
+    tty: true
+    restart: always
 volumes:
   phpsock:
   mysqldata104:
