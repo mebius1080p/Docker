@@ -22,4 +22,4 @@ COPY postfix/main.cf /etc/postfix/
 COPY rsyslog/rsyslog.conf /etc/
 COPY rsyslog/listen.conf /etc/rsyslog.d/
 
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
