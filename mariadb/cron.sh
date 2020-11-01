@@ -19,6 +19,6 @@ fi
 # dump タスク
 echo `date +%Y-%m-%d_%H:%M:%S` start dump >> $LOG_FILE
 
-docker exec -it docker_mariadb_1 /var/share/dump.sh
+docker exec docker_mariadb_1 /var/share/dump.sh
 
 echo `date +%Y-%m-%d_%H:%M:%S` end dump >> $LOG_FILE
