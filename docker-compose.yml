@@ -52,6 +52,7 @@ services:
       - "${MARIADB_CONF}:/etc/mysql/conf.d/custom.cnf:ro"
       # - "${MARIADB_LOG_DIR}:/var/log/mysql"
       - "${SHARE_DIR}:/var/share"
+      - "${DB_SCRIPTS_DIR}:/var/scripts"
       - "mysqldata104:/var/lib/mysql"
     restart: always
   letsencrypt:
