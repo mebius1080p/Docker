@@ -10,7 +10,7 @@ FROM centos:7
 LABEL maintainer="mebius"
 
 WORKDIR /root
-ARG COMPOSER_VER=1.10.10
+ARG COMPOSER_VER=1.10.17
 
 # git は composer の prestissimo プラグイン用
 # openssl は php の暗号化の他、swiftmailer ダウンロードの際に必要
@@ -50,9 +50,9 @@ RUN useradd ${USER_NAME}
 COPY supervisord.conf /etc/
 
 # composer 用ルート証明書コピー
-COPY curl.cacert.pem /etc/pki/tls/certs/
+# COPY curl.cacert.pem /etc/pki/tls/certs/
 
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 
 # web のディレクトリは apache コンテナと合わせといた方が楽
 # www.conf, php-fpm.conf は volume でホストと共有させる
