@@ -10,9 +10,9 @@ FROM centos:7
 LABEL maintainer="mebius"
 
 WORKDIR /root
-ARG COMPOSER_VER=1.10.17
+ARG COMPOSER_VER=2.0.8
 
-# git は composer の prestissimo プラグイン用
+# git は composer モジュールインストール用?
 # openssl は php の暗号化の他、swiftmailer ダウンロードの際に必要
 RUN echo "ip_resolve=4" >> /etc/yum.conf \
 	&& yum update -y \
@@ -22,7 +22,7 @@ RUN echo "ip_resolve=4" >> /etc/yum.conf \
 	openssl \
 	&& wget -4 https://rpms.remirepo.net/enterprise/remi-release-7.rpm \
 	&& rpm -Uvh remi-release-7.rpm \
-	&& yum install -y --enablerepo=remi-php74 --enablerepo=epel \
+	&& yum install -y --enablerepo=remi-php80 \
 	supervisor \
 	php-fpm \
 	php-cli \
@@ -49,18 +49,20 @@ RUN useradd ${USER_NAME}
 # supervisor の設定
 COPY supervisord.conf /etc/
 
-# composer 用ルート証明書コピー
-# COPY curl.cacert.pem /etc/pki/tls/certs/
-
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 
 # web のディレクトリは apache コンテナと合わせといた方が楽
-# www.conf, php-fpm.conf は volume でホストと共有させる
+# www.conf, php-fpm.conf は volume でバインド
 
-# COPY php.ini したあとだめだったのになぜか docker run 後はうまくいく……
-# composer global require hirak/prestissimo
+# 以下開発環境
+# yum install --enablerepo=remi-php80 php-ast php-pecl-xdebug3
 
-# 開発環境
-# yum install --enablerepo=remi-php74 php-ast
+# workuser で実施
+# su - workuser
 # composer global require phan/phan
-# yum install --enablerepo=remi-php74 php-pecl-xdebug
+
+# .bash_profile
+# path ~/.config/composer/vendor/bin
+
+# .bashrc
+# alias phan='phan --progress-bar --color'
