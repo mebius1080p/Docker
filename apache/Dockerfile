@@ -90,7 +90,7 @@ RUN mkdir ~/download -p \
 # => /usr/local/lib64/libssl.so.1.1
 # 最後に ldconfig コマンドでライブラリの場所を指定する
 WORKDIR /home/${USER_NAME}/download
-ARG OPENSSL_VERSION=1.1.1i
+ARG OPENSSL_VERSION=1.1.1k
 RUN wget -4 https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
 	&& tar xvf openssl-${OPENSSL_VERSION}.tar.gz \
 	&& cd openssl-${OPENSSL_VERSION} \
@@ -107,8 +107,16 @@ RUN wget -4 https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
 # nghttp2 インストール
 # /usr/local/lib に入る
 WORKDIR /home/${USER_NAME}/download
-ARG NGHTTP2_VERSION=1.41.0
-RUN wget -4 https://github.com/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION}/nghttp2-${NGHTTP2_VERSION}.tar.xz \
+ARG NGHTTP2_VERSION=1.43.0
+ARG PYTHON3_VERSION=3.8.8
+RUN wget -4 https://www.python.org/ftp/python/${PYTHON3_VERSION}/Python-${PYTHON3_VERSION}.tar.xz \
+	&& tar xvf Python-${PYTHON3_VERSION}.tar.xz \
+	&& cd Python-${PYTHON3_VERSION} \
+	&& ./configure \
+	&& make \
+	&& sudo make install \
+	&& cd .. \
+	&& wget -4 https://github.com/nghttp2/nghttp2/releases/download/v${NGHTTP2_VERSION}/nghttp2-${NGHTTP2_VERSION}.tar.xz \
 	&& tar xvf nghttp2-${NGHTTP2_VERSION}.tar.xz \
 	&& cd nghttp2-${NGHTTP2_VERSION} \
 	&& export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig \

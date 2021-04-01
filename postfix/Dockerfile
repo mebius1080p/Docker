@@ -7,7 +7,9 @@
 FROM centos:7
 LABEL maintainer="mebius"
 
-RUN yum update -y && yum install -y \
+RUN echo "ip_resolve=4" >> /etc/yum.conf \
+	&& yum update -y \
+	&& yum install -y \
 	epel-release \
 	&& yum install -y \
 	postfix \
