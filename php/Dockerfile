@@ -10,7 +10,7 @@ FROM centos:7
 LABEL maintainer="mebius"
 
 WORKDIR /root
-ARG COMPOSER_VER=2.0.11
+ARG COMPOSER_VER=2.0.13
 
 # git は composer モジュールインストール用?
 # openssl は php の暗号化の他、swiftmailer ダウンロードの際に必要
