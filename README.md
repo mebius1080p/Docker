@@ -106,7 +106,7 @@ catch_workers_output = yes
 - docker run した後コンテナ内で下記をインストール
 	```sh
 	# root
-	yum install php-pecl-xdebug php-ast php-xml --enablerepo=remi-php74
+	yum install php-pecl-xdebug php-ast php-xml --enablerepo=remi-php80
 	cd
 	wget https://phar.phpunit.de/phpunit-9.phar
 	mv phpunit-9.phar phpunit
