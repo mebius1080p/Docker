@@ -90,7 +90,7 @@ RUN mkdir ~/download -p \
 # => /usr/local/lib64/libssl.so.1.1
 # 最後に ldconfig コマンドでライブラリの場所を指定する
 WORKDIR /home/${USER_NAME}/download
-ARG OPENSSL_VERSION=1.1.1k
+ARG OPENSSL_VERSION=1.1.1l
 RUN wget -4 https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
 	&& tar xvf openssl-${OPENSSL_VERSION}.tar.gz \
 	&& cd openssl-${OPENSSL_VERSION} \
