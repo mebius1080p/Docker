@@ -147,7 +147,7 @@ RUN wget -4 http://ftp.jaist.ac.jp/pub/apache//apr/apr-${APR_VERSION}.tar.bz2 \
 # apache のインストール
 # httpd.spec ファイルはあらかじめ編集しておく
 WORKDIR /home/${USER_NAME}/download
-ARG APACHE_VERSION=2.4.48
+ARG APACHE_VERSION=2.4.49
 COPY spec/httpd.spec /home/${USER_NAME}/rpmbuild/SPECS/
 RUN wget -4 https://www-eu.apache.org/dist//httpd/httpd-${APACHE_VERSION}.tar.bz2 \
 	&& cp httpd-${APACHE_VERSION}.tar.bz2 ~/rpmbuild/SOURCES \
