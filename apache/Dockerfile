@@ -107,7 +107,7 @@ RUN wget -4 https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
 # nghttp2 インストール
 # /usr/local/lib に入る
 WORKDIR /home/${USER_NAME}/download
-ARG NGHTTP2_VERSION=1.44.0
+ARG NGHTTP2_VERSION=1.45.1
 ARG PYTHON3_VERSION=3.8.8
 RUN wget -4 https://www.python.org/ftp/python/${PYTHON3_VERSION}/Python-${PYTHON3_VERSION}.tar.xz \
 	&& tar xvf Python-${PYTHON3_VERSION}.tar.xz \
@@ -147,7 +147,7 @@ RUN wget -4 http://ftp.jaist.ac.jp/pub/apache//apr/apr-${APR_VERSION}.tar.bz2 \
 # apache のインストール
 # httpd.spec ファイルはあらかじめ編集しておく
 WORKDIR /home/${USER_NAME}/download
-ARG APACHE_VERSION=2.4.49
+ARG APACHE_VERSION=2.4.50
 COPY spec/httpd.spec /home/${USER_NAME}/rpmbuild/SPECS/
 RUN wget -4 https://www-eu.apache.org/dist//httpd/httpd-${APACHE_VERSION}.tar.bz2 \
 	&& cp httpd-${APACHE_VERSION}.tar.bz2 ~/rpmbuild/SOURCES \
