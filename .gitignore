@@ -2,3 +2,4 @@
 .env
 letsencrypt/conf
 *.tar.xz
+misc

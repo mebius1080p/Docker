@@ -50,7 +50,7 @@
 - php-fpm との連携での最重要設定
 ```conf
 <FilesMatch ".*\.php$">
-    SetHandler "proxy:unix:/var/run/php-fpm/php7.sock|fcgi://localhost"
+    SetHandler "proxy:unix:/var/run/php-fpm/php8.sock|fcgi://localhost"
 </FilesMatch>
 ```
 
