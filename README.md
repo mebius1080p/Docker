@@ -67,13 +67,13 @@
 - 最重要 php.ini 設定
 	* date.timezone = Asia/Tokyo
 	* pdo_mysql.default_socket=/var/lib/mysql/mysql.sock
-	* openssl.cafile=/etc/pki/tls/certs/curl.cacert.pem
+	* //openssl.cafile=/etc/pki/tls/certs/curl.cacert.pem
 		- composer で必要な模様
 
 ### www.conf
 - 重要設定
 ```conf
-listen = /var/run/php-fpm/php7.sock
+listen = /var/run/php-fpm/php8.sock
 
 listen.owner = daemon
 listen.group = daemon
@@ -97,21 +97,20 @@ catch_workers_output = yes
 
 ### composer
 - composer 自体は dockerfile に組み込み
-- docker run した後初回のみプラグインをセットアップ
-	```sh
-	# workuser で実施
-	composer global require hirak/prestissimo
-	```
+
+
 ### 開発環境限定 (php コンテナ)
 - docker run した後コンテナ内で下記をインストール
 	```sh
 	# root
-	yum install php-pecl-xdebug php-ast php-xml --enablerepo=remi-php80
-	cd
-	wget https://phar.phpunit.de/phpunit-9.phar
-	mv phpunit-9.phar phpunit
-	chmod 755 phpunit
-	mv phpunit /usr/bin/
+	yum install php-pecl-xdebug php-ast php-xml --enablerepo=remi-php81
+
+	# phpunit はプロジェクトごとのインストールを推奨
+	# cd
+	# wget https://phar.phpunit.de/phpunit-9.phar
+	# mv phpunit-9.phar phpunit
+	# chmod 755 phpunit
+	# mv phpunit /usr/bin/
 
 	# workuser で実施
 	composer global require phan/phan
@@ -119,7 +118,7 @@ catch_workers_output = yes
 	vi .bashrc
 
 	alias phan='~/.composer/vendor/bin/phan --progress-bar --color'
-	alias phpunit='phpunit --color'
+	# alias phpunit='phpunit --color'
 	# exit して workuser にスイッチ
 	```
 
@@ -132,7 +131,7 @@ catch_workers_output = yes
 	```
 - sudo docker network ls
 - docker run のときに、--network xxxxxxxx オプションを指定する
-- php で使用する config などで、mysql/mariadb の dsn に注意
+- //php で使用する config などで、mysql/mariadb の dsn に注意
 
 
 ## ローカルの開発環境用オレオレ証明書作成手順
