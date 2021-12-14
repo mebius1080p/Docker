@@ -10,7 +10,7 @@ FROM centos:7
 LABEL maintainer="mebius"
 
 WORKDIR /root
-ARG COMPOSER_VER=2.0.13
+ARG COMPOSER_VER=2.1.14
 
 # git は composer モジュールインストール用?
 # openssl は php の暗号化の他、swiftmailer ダウンロードの際に必要
@@ -22,7 +22,7 @@ RUN echo "ip_resolve=4" >> /etc/yum.conf \
 	openssl \
 	&& wget -4 https://rpms.remirepo.net/enterprise/remi-release-7.rpm \
 	&& rpm -Uvh remi-release-7.rpm \
-	&& yum install -y --enablerepo=remi-php80 \
+	&& yum install -y --enablerepo=remi-php81 \
 	supervisor \
 	php-fpm \
 	php-cli \
@@ -55,7 +55,7 @@ CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 # www.conf, php-fpm.conf は volume でバインド
 
 # 以下開発環境
-# yum install --enablerepo=remi-php80 php-ast php-pecl-xdebug3
+# yum install --enablerepo=remi-php81 php-ast php-pecl-xdebug3
 
 # workuser で実施
 # su - workuser
