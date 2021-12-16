@@ -27,7 +27,7 @@ services:
       - "${WWW_CONF}:/etc/php-fpm.d/www.conf:ro"
       - "${PHP_LOG_DIR}:/var/log/php-fpm"
       - "phpsock:/var/run/php-fpm"
-      - "mysqldata105:/var/lib/mysql"
+      - "mysqldata106:/var/lib/mysql"
     restart: always
   postfix:
     build:
@@ -53,7 +53,7 @@ services:
       # - "${MARIADB_LOG_DIR}:/var/log/mysql"
       - "${SHARE_DIR}:/var/share"
       - "${DB_SCRIPTS_DIR}:/var/scripts"
-      - "mysqldata105:/var/lib/mysql"
+      - "mysqldata106:/var/lib/mysql"
     restart: always
   letsencrypt:
     build:
@@ -75,7 +75,7 @@ services:
     restart: always
 volumes:
   phpsock:
-  mysqldata105:
+  mysqldata106:
 networks:
   common_net:
     driver: bridge
