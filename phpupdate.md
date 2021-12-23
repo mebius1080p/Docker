@@ -59,7 +59,7 @@ cd ~/docker
 sudo docker-compose up -d
 
 # 開発用コンポーネントインストール
-sudo docker exec -it docker_php_1 bash
+sudo docker exec -it docker-php-1 bash
 yum install --enablerepo=remi-php81 php-ast php-pecl-xdebug3
 su - workuser
 

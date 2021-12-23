@@ -4,7 +4,7 @@
 ```sh
 # ダンプ採取
 # 開発も本番も同じはず
-sudo docker exec -it docker_mariadb_1 bash
+sudo docker exec -it docker-mariadb-1 bash
 cd /var/share
 mysqldump -u root -p food_review > food_review.dump
 mysqldump -u root -p resume > resume.dump
@@ -32,7 +32,7 @@ sudo docker pull mariadb
 
 sudo docker-compose up -d
 
-sudo docker exec -it docker_mariadb_1 bash
+sudo docker exec -it docker-mariadb-1 bash
 cd /var/share
 mysql -u root -p
 source init_db.sql
