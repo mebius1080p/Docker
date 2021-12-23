@@ -3,7 +3,7 @@ set -euo pipefail
 
 # helper script for apache update
 
-APACHE_VERSION="2.4.51"
+APACHE_VERSION="2.4.52"
 
 # prepare spec file
 cd ~/ \

@@ -1,11 +1,10 @@
 %define contentdir /var/www
 %define suexec_caller apache
 %define mmn 20120211
-%define _unpackaged_files_terminate_build 0
 
 Summary: Apache HTTP Server
 Name: httpd
-Version: 2.4.51
+Version: 2.4.52
 Release: 1
 URL: http://httpd.apache.org/
 Vendor: Apache Software Foundation
@@ -147,11 +146,9 @@ rm -rf srclib/{apr,apr-util,pcre}
         --enable-pie \
         --with-pcre \
         --enable-mods-shared=all \
-        --enable-ssl --with-ssl=/usr/local --enable-bucketeer \
+        --enable-ssl --with-ssl --enable-bucketeer \
         --enable-case-filter --enable-case-filter-in \
-        --disable-imagemap \
-        --enable-http2 \
-        --with-nghttp2=/usr/local/lib
+        --disable-imagemap
 
 make %{?_smp_mflags}
 
