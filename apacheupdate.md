@@ -4,7 +4,7 @@
 ```sh
 # shutdown container
 cd ~/docker \
-&& sudo docker-compose down
+&& sudo docker compose down
 
 # remove old container image
 sudo docker images
@@ -15,5 +15,5 @@ sudo docker rmi xxxxxxxxxxx
 # nghttp2 のバージョンも更新がある場合は更新する
 
 # build
-sudo docker-compose up -d
+sudo docker compose up -d
 ```

@@ -25,8 +25,8 @@ docker exec docker-letsencrypt-1 /root/scripts/renew.sh
 echo "$(date +%Y-%m-%d_%H:%M:%S)" end certbot >> $LOG_FILE
 
 
-# docker-compose 再起動タスク
+# docker compose 再起動タスク
 echo "$(date +%Y-%m-%d_%H:%M:%S)" restarting container >> $LOG_FILE
 cd "$dc_path" || exit
-docker-compose restart
+docker compose restart
 echo "$(date +%Y-%m-%d_%H:%M:%S)" restarting container done >> $LOG_FILE

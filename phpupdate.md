@@ -37,7 +37,7 @@ sudo docker stop ptest \
 
 # コンテナ停止
 cd ~/docker
-sudo docker-compose down
+sudo docker compose down
 
 # ここで php.ini, www.conf を比較しながら編集
 cd ~/docker/misc
@@ -56,7 +56,7 @@ sudo docker rmi docker_php
 
 # コンテナ起動
 cd ~/docker
-sudo docker-compose up -d
+sudo docker compose up -d
 
 # 開発用コンポーネントインストール
 sudo docker exec -it docker-php-1 bash
@@ -84,12 +84,12 @@ phan --init --init-level=1
 ## on production
 ```sh
 cd ~/Docker
-sudo docker-compose down
+sudo docker compose down
 
 git pull
 sudo docker rmi docker_php
 
-sudo docker-compose up -d
+sudo docker compose up -d
 
 # 確認
 sudo docker ps -a

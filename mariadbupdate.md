@@ -14,9 +14,9 @@ exit
 
 cd ~/docker
 #cd ~/Docker
-sudo docker-compose down
+sudo docker compose down
 
-# docker-compose.yml 編集
+# docker compose.yml 編集
 # volume 変更
 mysqldata106
 # 本番の場合は下記
@@ -30,7 +30,7 @@ git pull
 # イメージを最新に
 sudo docker pull mariadb
 
-sudo docker-compose up -d
+sudo docker compose up -d
 
 sudo docker exec -it docker-mariadb-1 bash
 cd /var/share
