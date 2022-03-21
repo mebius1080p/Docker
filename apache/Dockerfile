@@ -91,7 +91,7 @@ RUN mkdir ~/download -p \
 # => /usr/local/lib64/libssl.so.1.1
 # 最後に ldconfig コマンドでライブラリの場所を指定する
 WORKDIR /home/${USER_NAME}/download
-ARG OPENSSL_VERSION=3.0.1
+ARG OPENSSL_VERSION=3.0.2
 RUN wget -4 https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
 	&& tar xvf openssl-${OPENSSL_VERSION}.tar.gz \
 	&& cd openssl-${OPENSSL_VERSION} \
@@ -108,8 +108,8 @@ RUN wget -4 https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
 # nghttp2 インストール
 # /usr/local/lib に入る
 WORKDIR /home/${USER_NAME}/download
-ARG NGHTTP2_VERSION=1.46.0
-ARG PYTHON3_VERSION=3.9.4
+ARG NGHTTP2_VERSION=1.47.0
+ARG PYTHON3_VERSION=3.10.3
 RUN wget -4 https://www.python.org/ftp/python/${PYTHON3_VERSION}/Python-${PYTHON3_VERSION}.tar.xz \
 	&& tar xvf Python-${PYTHON3_VERSION}.tar.xz \
 	&& cd Python-${PYTHON3_VERSION} \
@@ -148,7 +148,7 @@ RUN wget -4 http://ftp.jaist.ac.jp/pub/apache//apr/apr-${APR_VERSION}.tar.bz2 \
 # apache のインストール
 # httpd.spec ファイルはあらかじめ編集しておく
 WORKDIR /home/${USER_NAME}/download
-ARG APACHE_VERSION=2.4.52
+ARG APACHE_VERSION=2.4.53
 COPY spec/httpd.spec /home/${USER_NAME}/rpmbuild/SPECS/
 RUN wget -4 https://www-eu.apache.org/dist//httpd/httpd-${APACHE_VERSION}.tar.bz2 \
 	&& cp httpd-${APACHE_VERSION}.tar.bz2 ~/rpmbuild/SOURCES \
