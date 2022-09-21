@@ -45,6 +45,7 @@ services:
     environment:
       - TZ=Asia/Tokyo
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MARIADB_AUTO_UPGRADE=1
     networks:
       common_net:
         ipv4_address: 172.21.0.3
