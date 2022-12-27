@@ -1,4 +1,4 @@
-FROM centos:8
+FROM quay.io/centos/centos:stream9
 LABEL maintainer="mebius"
 
 RUN echo "ip_resolve=4" >> /etc/yum.conf \
