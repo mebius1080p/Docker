@@ -91,7 +91,7 @@ RUN mkdir ~/download -p \
 # => /usr/local/lib64/libssl.so.1.1
 # 最後に ldconfig コマンドでライブラリの場所を指定する
 WORKDIR /home/${USER_NAME}/download
-ARG OPENSSL_VERSION=3.0.7
+ARG OPENSSL_VERSION=3.0.8
 RUN wget -4 https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
 	&& tar xvf openssl-${OPENSSL_VERSION}.tar.gz \
 	&& cd openssl-${OPENSSL_VERSION} \
@@ -134,7 +134,7 @@ RUN wget -4 https://www.python.org/ftp/python/${PYTHON3_VERSION}/Python-${PYTHON
 # APR, APR-UTIL のインストール
 # APR-UTIL は新しいものが yum にあるのでそれを使う
 WORKDIR /home/${USER_NAME}/download
-ARG APR_VERSION=1.7.0
+ARG APR_VERSION=1.7.2
 RUN wget -4 http://ftp.jaist.ac.jp/pub/apache//apr/apr-${APR_VERSION}.tar.bz2 \
 	&& rpmbuild -tb --clean apr-${APR_VERSION}.tar.bz2 \
 	&& cd ~/rpmbuild/RPMS/x86_64 \
