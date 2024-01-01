@@ -1,7 +1,7 @@
 # HTTP2, TLS 1.3 を使えるサイトに必要なコンテナを作るための Docker リポジトリ
 
 ## 概要
-- apache, php, postfix は centos7 ベースのイメージから構築
+- apache, php, postfix は centos stream ベースのイメージから構築
 - MariaDB は公式イメージを使用
 - それぞれ個別のコンテナで動かす
 - 接続
@@ -67,8 +67,6 @@
 - 最重要 php.ini 設定
 	* date.timezone = Asia/Tokyo
 	* pdo_mysql.default_socket=/var/lib/mysql/mysql.sock
-	* //openssl.cafile=/etc/pki/tls/certs/curl.cacert.pem
-		- composer で必要な模様
 
 ### www.conf
 - 重要設定
@@ -103,7 +101,7 @@ catch_workers_output = yes
 - docker run した後コンテナ内で下記をインストール
 	```sh
 	# root
-	yum install php-pecl-xdebug php-ast php-xml --enablerepo=remi-php81
+	yum install php-pecl-xdebug php-ast php-xml
 
 	# phpunit はプロジェクトごとのインストールを推奨
 	# cd
