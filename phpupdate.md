@@ -59,9 +59,9 @@ su - workuser
 
 composer global require phan/phan
 
-vi .bash_profile
-# path ~/.config/composer/vendor/bin
-source .bash_profile
+vi .bashrc
+# $HOME/.config/composer/vendor/bin
+source .bashrc
 
 vi .bashrc
 # alias phan='phan --progress-bar --color'
