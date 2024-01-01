@@ -4,25 +4,19 @@
 # 空の centos コンテナ起動
 sudo docker run -itd --name ptest \
  -e TZ=Asia/Tokyo \
- centos:7 bash
+ quay.io/centos/centos:stream9 bash
 
 # コンテナに入る
 sudo docker exec -it ptest bash
 
 # php インストール
 echo "ip_resolve=4" >> /etc/yum.conf
-yum install epel-release
-yum install wget
-yum update ca-certificates
-wget -4 https://rpms.remirepo.net/enterprise/remi-release-7.rpm \
-&& rpm -Uvh remi-release-7.rpm
+yum install epel-release wget
+wget -4 https://rpms.remirepo.net/enterprise/remi-release-9.rpm \
+&& rpm -Uvh remi-release-9.rpm
 
-yum install --enablerepo=remi-php81 php-fpm \
- php-cli \
- php-pdo \
- php-mysqlnd \
- php-mbstring \
- php-xml
+dnf module enable php:remi-8.2 -y
+dnf install php-fpm php-cli php-pdo php-mysqlnd php-mbstring php-xml -y
 
 # ファイル取りだし
 # ホストマシンで実行
@@ -60,7 +54,7 @@ sudo docker compose up -d
 
 # 開発用コンポーネントインストール
 sudo docker exec -it docker-php-1 bash
-yum install --enablerepo=remi-php81 php-ast php-pecl-xdebug3
+yum install php-ast php-pecl-xdebug3
 su - workuser
 
 composer global require phan/phan
