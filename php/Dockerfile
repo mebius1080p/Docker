@@ -8,7 +8,7 @@ FROM quay.io/centos/centos:stream9
 LABEL maintainer="mebius"
 
 WORKDIR /root
-ARG COMPOSER_VER=2.5.5
+ARG COMPOSER_VER=2.6.6
 
 # git は composer モジュールインストール用?
 # openssl は php の暗号化の他、swiftmailer ダウンロードの際に必要
