@@ -22,7 +22,6 @@ services:
     network_mode: "host"
     volumes:
       - "${WEB_DIR}:/var/web"
-      - "/home/suna/PHPLib:/var/PHPLib"
       - "${PHP_INI}:/etc/php.ini:ro"
       - "${PHP_FPM_CONF}:/etc/php-fpm.conf:ro"
       - "${WWW_CONF}:/etc/php-fpm.d/www.conf:ro"
