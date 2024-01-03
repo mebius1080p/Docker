@@ -34,7 +34,7 @@ sudo docker compose up -d
 
 sudo docker exec -it docker-mariadb-1 bash
 cd /var/share
-mysql -u root -p
+mariadb -u root -p
 source init_db.sql
 
 use food_review
