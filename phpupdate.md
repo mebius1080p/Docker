@@ -20,7 +20,7 @@ dnf install php-fpm php-cli php-pdo php-mysqlnd php-mbstring php-xml -y
 
 # ファイル取りだし
 # ホストマシンで実行
-cd ~/docker/misc
+cd ~/Docker/misc
 sudo docker cp ptest:/etc/php-fpm.d/www.conf ./
 sudo docker cp ptest:/etc/php.ini ./
 
@@ -30,26 +30,28 @@ sudo docker stop ptest \
 
 
 # コンテナ停止
-cd ~/docker
+cd ~/Docker
 sudo docker compose down
 
 # ここで php.ini, www.conf を比較しながら編集
-cd ~/docker/misc
+cd ~/Docker/misc
 sudo chown xxx:xxx php.ini
 sudo chown xxx:xxx www.conf
 
 # ファイル更新(上書き)
-cd ~/docker/php/conf
-cp ~/docker/misc/php.ini ./
-cp ~/docker/misc/www.conf ./
+cd ~/Docker/php/conf
+cp ~/Docker/misc/php.ini ./
+cp ~/Docker/misc/www.conf ./
 
 # コンテナイメージ削除
-sudo docker rmi docker_php
+sudo docker rmi docker-php
+
+sudo docker pull quay.io/centos/centos:stream9
 
 # dockerfile 更新
 
 # コンテナ起動
-cd ~/docker
+cd ~/Docker
 sudo docker compose up -d
 
 # 開発用コンポーネントインストール
@@ -73,6 +75,24 @@ source .bashrc
 # 各種プロジェクトで phan config 更新
 # 既存の config.php を名前変更
 phan --init --init-level=1
+```
+
+## イメージの転送
+```sh
+sudo docker save docker-php > docker-php.tar
+
+# ファイルを転送する
+
+# イメージのロード
+cd ~/Docker
+sudo docker compose down
+sudo docker rmi docker-php
+sudo docker images
+cd xxx
+sudo docker load < docker-php.tar
+
+cd ~/Docker
+sudo docker compose up -d
 ```
 
 ## on production
