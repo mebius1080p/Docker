@@ -8,7 +8,7 @@ FROM quay.io/centos/centos:stream9
 LABEL maintainer="mebius"
 
 WORKDIR /root
-ARG COMPOSER_VER=2.8.4
+ARG COMPOSER_VER=2.9.3
 
 # git は composer モジュールインストール用?
 # openssl は php の暗号化の他、swiftmailer ダウンロードの際に必要
@@ -22,7 +22,7 @@ yum install git zip unzip curl-devel tzdata openssl supervisor -y
 wget -4 https://rpms.remirepo.net/enterprise/remi-release-9.rpm
 rpm -Uvh remi-release-9.rpm
 
-dnf module enable php:remi-8.4 -y
+dnf module enable php:remi-8.5 -y
 dnf install php-fpm php-cli php-pdo php-mysqlnd php-mbstring php-xml -y
 yum clean all
 
