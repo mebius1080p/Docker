@@ -19,7 +19,7 @@ sudo docker compose down
 
 # docker compose.yml 編集
 # volume 変更
-mysqldata116
+mysqldata121
 # 本番の場合は下記
 cd ~/Docker
 git pull
