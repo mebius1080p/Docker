@@ -15,7 +15,7 @@ yum install epel-release wget
 wget -4 https://rpms.remirepo.net/enterprise/remi-release-9.rpm \
 && rpm -Uvh remi-release-9.rpm
 
-dnf module enable php:remi-8.4 -y
+dnf module enable php:remi-8.5 -y
 dnf install php-fpm php-cli php-pdo php-mysqlnd php-mbstring php-xml -y
 
 # ファイル取りだし
